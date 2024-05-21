@@ -1,4 +1,6 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+import { loginUserApi } from '../../apis/Api'
+import { toast } from 'react-toastify'
 
 const Login = () => {
 
@@ -14,11 +16,11 @@ const Login = () => {
   var validation = () => {
     let isValid = true;
 
-    if(email === '' || email.includes('@' === false)) {
+    if (email === '' || email.includes('@' === false)) {
       setEmailError('Email is empty or invalid')
       isValid = false
     }
-    if(password.trim() === ''){
+    if (password.trim() === '') {
       setPasswordError('Password is empty')
       isValid = false
     }
@@ -33,11 +35,41 @@ const Login = () => {
     e.preventDefault()
 
     // validation
-    if(!validation()){
+    if (!validation()) {
       return;
     }
 
-    console.log(email, password)
+    // Making json object
+    const data = {
+      "email": email,
+      "password": password
+    }
+
+    // Making api request (Same as Register)
+    loginUserApi(data).then((res) => {
+
+      // Success :true/false, Message
+      if (res.data.success === false) {
+        toast.error(res.data.message)
+      } else {
+        toast.success(res.data.message)
+
+        // Received data : success-bool, msage-string, token-string, userData- json object
+
+        // 1. Set token
+        localStorage.setItem('token', res.data.token)
+
+        // 2. Convert json object
+        const convertedData = JSON.stringify(res.data.userData)
+
+        // 3. Set user data in local storage
+        localStorage.setItem('user', convertedData)
+
+      }
+
+    })
+
+
   }
 
 

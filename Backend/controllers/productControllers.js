@@ -1,5 +1,9 @@
 const createProduct = (req, res) => {
-    res.send("Product API is Working ...!")
+    // check incomming data
+    console.log(req.body)
+    console.log(req.files)
+
+    // Task : destructuring, validation
 }
 
 module.exports = {

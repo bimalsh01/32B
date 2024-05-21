@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 
-
-
 const Navbar = () => {
+
+    // get user data
+    const user = JSON.parse(localStorage.getItem('user'))
+
     return (
         <>
             <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -20,12 +22,29 @@ const Navbar = () => {
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Link</a>
                             </li>
-                            
-                           
+
+
                         </ul>
                         <form class="d-flex" role="search">
-                            <Link to={'/register'} class="btn btn-outline-danger me-2" type="submit">Register</Link>
-                            <Link to={'/login'} class="btn btn-outline-success" type="submit">Login</Link>
+                            {
+                                user ? (<>
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Welcome, {user.firstName}
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                                        </ul>
+                                    </div>
+                                </>)
+                                    : (<>
+                                        <Link to={'/register'} class="btn btn-outline-danger me-2" type="submit">Register</Link>
+                                        <Link to={'/login'} class="btn btn-outline-success" type="submit">Login</Link>
+                                    </>)
+
+                            }
                         </form>
                     </div>
                 </div>
