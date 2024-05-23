@@ -3,7 +3,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./database/database');
 const cors = require('cors')
-const multipart = require('connect-multiparty')
+const fileUpload = require("express-fileupload");
 
 // 2. Creating an express app
 const app = express();
@@ -11,8 +11,10 @@ const app = express();
 // JSON Config
 app.use(express.json())
 
-// Accepting form data (json,image,video,audio etc)
-app.use(multipart())
+
+// Use express-fileupload middleware
+app.use(fileUpload());
+
 
 
 // CORS Config

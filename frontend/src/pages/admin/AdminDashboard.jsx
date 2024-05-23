@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import { createProductApi } from '../../apis/Api'
 
 const AdminDashboard = () => {
 
@@ -24,6 +25,18 @@ const AdminDashboard = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log(productName, productPrice, productCategory, productDescription, productImage)
+
+        // Creating form data
+        const formData = new FormData()
+        formData.append('productName', productName)
+        formData.append('productPrice', productPrice)
+        formData.append('productCategory', productCategory)
+        formData.append('productDescription', productDescription)
+        formData.append('productImage', productImage)
+
+
+        createProductApi(formData)
+
     }
     
 
