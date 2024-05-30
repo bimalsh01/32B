@@ -1,7 +1,31 @@
-import React, {useState} from 'react'
-import { createProductApi } from '../../apis/Api'
+import React, { useState, useEffect } from 'react'
+import { createProductApi, getAllProducts } from '../../apis/Api'
+import { toast } from 'react-toastify'
 
 const AdminDashboard = () => {
+
+    // logic for get products
+    const [products, setProducts] = useState([])
+
+    // Hit API (Get all product) Auto -> useEffect (list of products)
+    useEffect(() => {
+
+        getAllProducts().then((res) => {
+            // success, message, list of products(products)
+            setProducts(res.data.products)
+
+        }).catch((error) => {
+            console.log(error)
+        })
+
+
+    }, [])
+
+    console.log(products)
+
+    // Make a state to save (Array format)
+    // Table row (pn, pp, pd)
+
 
     // Making a state for product
     const [productName, setProductName] = useState('')
@@ -26,7 +50,8 @@ const AdminDashboard = () => {
         e.preventDefault()
         console.log(productName, productPrice, productCategory, productDescription, productImage)
 
-        // Creating form data
+
+        // make a logical form data
         const formData = new FormData()
         formData.append('productName', productName)
         formData.append('productPrice', productPrice)
@@ -34,13 +59,36 @@ const AdminDashboard = () => {
         formData.append('productDescription', productDescription)
         formData.append('productImage', productImage)
 
+        // make a api call/request
+        createProductApi(formData).then((res) => {
+            if (res.status === 201) {
+                toast.success(res.data.message)
+            } else {
+                toast.error("Something went wrong in frontend!")
+            }
+        }).catch((error) => {
 
-        createProductApi(formData)
+            if (error.response) {
+                if (error.response.status === 400) {
+                    toast.error(error.response.data.message)
+                }
+                // space for 401 error
+
+            } else if (error.response.status === 500) {
+                toast.error("Internal server error")
+            } else {
+                toast.error("No response!!")
+            }
+
+        })
+
+
+
 
     }
-    
 
-    
+
+
     return (
         <>
             <div className='container'>
@@ -48,12 +96,12 @@ const AdminDashboard = () => {
                 <div className='d-flex justify-content-between mt-2'>
                     <h2>Admin Dashboard</h2>
 
-                    
+
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Add Product
                     </button>
 
-                    
+
                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -62,41 +110,41 @@ const AdminDashboard = () => {
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    
-                                        <form action="">
 
-                                            <label>Product Name</label>
-                                            <input onChange={(e) => setProductName(e.target.value)} type="text" className='form-control' placeholder='Enter product Name' />
-                                            
-                                            <label className='mt-2'>Product Price</label>
-                                            <input onChange={(e) => setProductPrice(e.target.value)} type="number" className='form-control' placeholder='Enter product Price' />
-                                            
-                                            <div className='mt-2'>
-                                                <label>Select Category</label>
-                                                <select onChange={(e) => setProductCategory(e.target.value)} className='form-control'>
-                                                    <option value="plants">Plants</option>
-                                                    <option value="gadgets">Gadgets</option>
-                                                    <option value="electronics">Electronics</option>
-                                                    <option value="mobile">Mobile</option>
-                                                </select>
-                                            </div>
+                                    <form action="">
 
-                                            <label className='mt-2'>Type product description</label>
-                                            <textarea onChange={(e) => setProductDescription(e.target.value)} className='form-control'></textarea>
+                                        <label>Product Name</label>
+                                        <input onChange={(e) => setProductName(e.target.value)} type="text" className='form-control' placeholder='Enter product Name' />
 
-                                            <label className='mt-2'>Product Image</label>
-                                            <input onChange={handleImageUpload} type="file" className='form-control' />
+                                        <label className='mt-2'>Product Price</label>
+                                        <input onChange={(e) => setProductPrice(e.target.value)} type="number" className='form-control' placeholder='Enter product Price' />
 
-                                            {/* Preview Image */}
-                                            {
-                                                previewImage && (
-                                                    <div className=''>
-                                                        <img src={previewImage} alt="preview image" className='img-fluid rounded object-fit-cover mt-3' />
-                                                    </div>
-                                                )
-                                            }
+                                        <div className='mt-2'>
+                                            <label>Select Category</label>
+                                            <select onChange={(e) => setProductCategory(e.target.value)} className='form-control'>
+                                                <option value="plants">Plants</option>
+                                                <option value="gadgets">Gadgets</option>
+                                                <option value="electronics">Electronics</option>
+                                                <option value="mobile">Mobile</option>
+                                            </select>
+                                        </div>
 
-                                        </form>
+                                        <label className='mt-2'>Type product description</label>
+                                        <textarea onChange={(e) => setProductDescription(e.target.value)} className='form-control'></textarea>
+
+                                        <label className='mt-2'>Product Image</label>
+                                        <input onChange={handleImageUpload} type="file" className='form-control' />
+
+                                        {/* Preview Image */}
+                                        {
+                                            previewImage && (
+                                                <div className=''>
+                                                    <img src={previewImage} alt="preview image" className='img-fluid rounded object-fit-cover mt-3' />
+                                                </div>
+                                            )
+                                        }
+
+                                    </form>
 
                                 </div>
                                 <div class="modal-footer">
@@ -121,21 +169,27 @@ const AdminDashboard = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <img height={'40px'} width={'40px'} src="https://th.bing.com/th/id/OIP.Vtxy0FjT_EfudI4cQk1kzAHaE8?rs=1&pid=ImgDetMain" alt="" />
-                            </td>
-                            <td>Sunflower</td>
-                            <td>NPR.200</td>
-                            <td>Plants</td>
-                            <td>Imported from Canada</td>
-                            <td>
-                                <div className='btn-group' role='group'>
-                                    <button className='btn btn-success'>Edit</button>
-                                    <button className='btn btn-danger'>Delete</button>
-                                </div>
-                            </td>
-                        </tr>
+
+                        {
+                            products.map((singleProduct) => (
+                                <tr>
+                                    <td>
+                                        <img height={'40px'} width={'40px'} src={`http://localhost:5000/products/${singleProduct.productImage}`} alt="" />
+                                    </td>
+                                    <td>{singleProduct.productName}</td>
+                                    <td>NPR.{singleProduct.productPrice}</td>
+                                    <td>{singleProduct.productCategory}</td>
+                                    <td>{singleProduct.productDescription}</td>
+                                    <td>
+                                        <div className='btn-group' role='group'>
+                                            <button className='btn btn-success'>Edit</button>
+                                            <button className='btn btn-danger'>Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                        }
+
                     </tbody>
                 </table>
 
@@ -145,3 +199,10 @@ const AdminDashboard = () => {
 }
 
 export default AdminDashboard
+
+// --------------------------
+// --------------------------
+
+// products (Array) [{pp1,pn1},{pp2,pn2}]
+// Array mapping (Table)
+// products (product) -> pp1

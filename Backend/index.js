@@ -3,7 +3,9 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./database/database');
 const cors = require('cors')
-const fileUpload = require("express-fileupload");
+const fileUpload = require('express-fileupload')
+const path  = require('path')
+
 
 // 2. Creating an express app
 const app = express();
@@ -11,9 +13,11 @@ const app = express();
 // JSON Config
 app.use(express.json())
 
+// File Upload Config
+app.use(fileUpload())
 
-// Use express-fileupload middleware
-app.use(fileUpload());
+// Make a public folder access to outside
+app.use(express.static('./public'))
 
 
 
@@ -33,6 +37,8 @@ connectDB();
 
 // 3. Defining the port
 const PORT = process.env.PORT;
+
+
 
 // 4. Creating a test route or endpoint
 app.get('/test', (req,res)=>{
