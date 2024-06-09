@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { createProductApi, getAllProducts } from '../../apis/Api'
+import { createProductApi, deleteProduct, getAllProducts } from '../../apis/Api'
 import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
 
@@ -46,6 +46,27 @@ const AdminDashboard = () => {
         setPreviewImage(URL.createObjectURL(file))
     }
 
+    // Delete Product
+    const handleDelete = (id) => {
+        const confirmDialog = window.confirm("Are you sure want to delete?")
+        if(confirmDialog){
+            // Delete product
+
+            deleteProduct(id).then((res) => {
+                if(res.status === 201){
+                    toast.success(res.data.message)
+                    window.location.reload()
+                }
+            }).catch((error) => {
+                if(error.response.status === 500){
+                    toast.error(error.response.data.message)
+                }
+            })
+
+        }
+
+    }
+
     // handle submit
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -82,9 +103,6 @@ const AdminDashboard = () => {
             }
 
         })
-
-
-
 
     }
 
@@ -184,7 +202,7 @@ const AdminDashboard = () => {
                                     <td>
                                         <div className='btn-group' role='group'>
                                             <Link to={`/admin/update/${singleProduct._id}`} className='btn btn-success'>Edit</Link>
-                                            <button className='btn btn-danger'>Delete</button>
+                                            <button onClick={()=> handleDelete(singleProduct._id)} className='btn btn-danger'>Delete</button>
                                         </div>
                                     </td>
                                 </tr>
