@@ -102,7 +102,7 @@ const loginUser = async (req,res) => {
         // 3. Generate JWT token
         // 3.1 Secret Decryption Key (.env)
         const token = await jwt.sign(
-            {id : user._id},
+            {id : user._id, isAdmin : user.isAdmin},
             process.env.JWT_SECRET
         )
 

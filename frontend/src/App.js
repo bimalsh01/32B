@@ -15,6 +15,9 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminUpdate from './pages/admin/AdminUpdate';
+import AdminRoutes from './protected_routes/AdminRoutes';
+import Profile from './pages/profile/Profile';
+import UserRoutes from './protected_routes/UserRoutes';
 
 
 function App() {
@@ -26,10 +29,18 @@ function App() {
         <Route path='/' element={<Homepage/>} />
         <Route path='/register' element={<Register/>} />
         <Route path='/login' element={<Login/>} />
+
+        {/* Profile - Make a page and route*/}
+
+        <Route element={<UserRoutes/>}>
+          <Route path='/profile' element={<Profile/>} />
+        </Route>
         
         {/* Admin Routes */}
-        <Route path='/admin/dashboard' element={<AdminDashboard/>}/>
-        <Route path='/admin/update/:id' element={<AdminUpdate/>} />
+        <Route element={<AdminRoutes/>}>
+          <Route path='/admin/dashboard' element={<AdminDashboard/>}/>
+          <Route path='/admin/update/:id' element={<AdminUpdate/>} />
+        </Route>
 
       </Routes>
     </Router>
