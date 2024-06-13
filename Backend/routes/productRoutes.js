@@ -6,7 +6,7 @@ router.post('/create',productControllers.createProduct)
 
 // fetch all
 // http://localhost:5000/api/product/get_all_products
-router.get('/get_all_products', authGuard ,productControllers.getAllProducts)
+router.get('/get_all_products' ,productControllers.getAllProducts)
 
 // fetch single product
 // If POST, body(data)
@@ -16,7 +16,7 @@ router.get('/get_single_product/:id',authGuard, productControllers.getProduct)
 router.delete('/delete_product/:id',adminGuard, productControllers.deleteProduct)
 
 // update product
-router.put('/update_product/:id',adminGuard, productControllers.updateProduct)
+router.put('/update_product/:id', productControllers.updateProduct)
 
 // exporting
 module.exports = router;

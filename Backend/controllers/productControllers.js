@@ -175,7 +175,7 @@ const updateProduct = async (req, res) => {
             const existingProduct = await productModel.findById(req.params.id)
 
             // Search that image in directory
-            if(req.body.productImage){ // if new image is uploaded, then only remove old image
+            if (req.body.productImage) { // if new image is uploaded, then only remove old image
                 const oldImagePath = path.join(__dirname, `../public/products/${existingProduct.productImage}`)
 
                 // delete from file system
@@ -183,20 +183,20 @@ const updateProduct = async (req, res) => {
 
             }
 
-            // update in database
-            const updatedProduct = await productModel.findByIdAndUpdate(req.params.id, req.body)
-            
-            // send a response
-            res.status(201).json({
-                success : true,
-                message : "Product Updated!",
-                updatedProduct : updatedProduct
-            })
 
+        } // if ko closing
 
+        // ----------------------------------------
 
+        // update in database
+        const updatedProduct = await productModel.findByIdAndUpdate(req.params.id, req.body)
 
-        }
+        // send a response
+        res.status(201).json({
+            success: true,
+            message: "Product Updated!",
+            updatedProduct: updatedProduct
+        })
 
     } catch (error) {
         console.log(error)
