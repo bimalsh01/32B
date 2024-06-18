@@ -16,7 +16,7 @@ router.get('/get_single_product/:id',authGuard, productControllers.getProduct)
 router.delete('/delete_product/:id',adminGuard, productControllers.deleteProduct)
 
 // update product
-router.put('/update_product/:id', productControllers.updateProduct)
+router.put('/update_product/:id',adminGuard, productControllers.updateProduct)
 
 // exporting
 module.exports = router;

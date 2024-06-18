@@ -38,11 +38,11 @@ function App() {
         
         {/* Admin Routes */}
         <Route element={<AdminRoutes/>}>
-          
+            <Route path='/admin/dashboard' element={<AdminDashboard/>}/>
+            <Route path='/admin/update/:id' element={<AdminUpdate/>} />
         </Route>
 
-        <Route path='/admin/dashboard' element={<AdminDashboard/>}/>
-        <Route path='/admin/update/:id' element={<AdminUpdate/>} />
+      
 
       </Routes>
     </Router>
