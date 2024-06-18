@@ -1,7 +1,25 @@
-import React, { useEffect } from 'react'
-import { testApi } from '../../apis/Api'
+import React, { useEffect, useState } from 'react'
+import { getAllProducts, testApi } from '../../apis/Api'
+import ProductCard from '../../components/ProductCard'
 
 const Homepage = () => {
+
+
+  // logic for get products
+  const [products, setProducts] = useState([])
+
+  // Hit API (Get all product) Auto -> useEffect (list of products)
+  useEffect(() => {
+    getAllProducts().then((res) => {
+      // success, message, list of products(products)
+      setProducts(res.data.products)
+
+    }).catch((error) => {
+      console.log(error)
+    })
+  }, [])
+
+  console.log(products)
 
   return (
     <>
@@ -14,26 +32,26 @@ const Homepage = () => {
         <div class="carousel-inner">
           <div class="carousel-item active">
             <img src="https://images.pexels.com/photos/2562992/pexels-photo-2562992.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="d-block w-100" alt="..." />
-              <div class="carousel-caption d-none d-md-block">
-                <h5>30% OFF on Leather Shoes</h5>
-                <p>Best Quality Shoes imported from Alaska, USA</p>
-              </div>
+            <div class="carousel-caption d-none d-md-block">
+              <h5>30% OFF on Leather Shoes</h5>
+              <p>Best Quality Shoes imported from Alaska, USA</p>
+            </div>
           </div>
           <div class="carousel-item">
-            <img src="https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="d-block w-100" alt="..."/>
-              <div class="carousel-caption d-none d-md-block">
-                <h5>Laptop for Sale</h5>
-                <p>Best Quality Laptops from Apple</p>
-              </div>
+            <img src="https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="d-block w-100" alt="..." />
+            <div class="carousel-caption d-none d-md-block">
+              <h5>Laptop for Sale</h5>
+              <p>Best Quality Laptops from Apple</p>
+            </div>
           </div>
           <div class="carousel-item">
-            <img src="https://images.pexels.com/photos/60626/pexels-photo-60626.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="d-block w-100" alt="..."/>
-              <div class="carousel-caption d-none d-md-block">
-                <h5>Nice KeyBoard</h5>
-                <p>
-                  Best Quality Keyboards from Apple
-                </p>
-              </div>
+            <img src="https://images.pexels.com/photos/60626/pexels-photo-60626.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="d-block w-100" alt="..." />
+            <div class="carousel-caption d-none d-md-block">
+              <h5>Nice KeyBoard</h5>
+              <p>
+                Best Quality Keyboards from Apple
+              </p>
+            </div>
           </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
@@ -45,6 +63,31 @@ const Homepage = () => {
           <span class="visually-hidden">Next</span>
         </button>
       </div>
+
+
+      <div className='container mt-3'>
+
+        <h2>Available Products</h2>
+
+        {/* Dynamic Card - for Specific Product */}
+
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+
+          {
+            products.map((singleProduct) => (
+              <div class="col">
+                <ProductCard productInformation={singleProduct} color={'green'} />
+              </div>
+            ))
+          }
+
+
+
+
+        </div>
+
+      </div>
+
 
     </>
   )

@@ -6,7 +6,7 @@ router.post('/create',productControllers.createProduct)
 
 // fetch all
 // http://localhost:5000/api/product/get_all_products
-router.get('/get_all_products' ,productControllers.getAllProducts)
+router.get('/get_all_products', productControllers.getAllProducts)
 
 // fetch single product
 // If POST, body(data)
