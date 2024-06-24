@@ -75,3 +75,7 @@ app.listen(PORT, ()=>{
 
 // http://localhost:5000/api/product/create
 // Response : Product API is Working ...!
+
+
+// exporting for testing
+module.exports = app;
