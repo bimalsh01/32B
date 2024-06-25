@@ -18,5 +18,8 @@ router.delete('/delete_product/:id',adminGuard, productControllers.deleteProduct
 // update product
 router.put('/update_product/:id',adminGuard, productControllers.updateProduct)
 
+// pagination
+router.get('/pagination', productControllers.productPagination)
+
 // exporting
 module.exports = router;
