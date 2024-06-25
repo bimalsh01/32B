@@ -1,6 +1,7 @@
 const userModel = require('../models/userModels')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const sendOtp = require('../service/sendOtp')
 
 
 // 1. Creating user function
@@ -9,10 +10,10 @@ const createUser = async (req, res) => {
     console.log(req.body)
 
     // #. Destructuring
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, phone } = req.body;
 
     // 2. Validation
-    if (!firstName || !lastName || !email || !password) {
+    if (!firstName || !lastName || !email || !password || !phone) {
         return res.json({
             "success": false,
             "message": "Please enter all fields!"
@@ -42,6 +43,7 @@ const createUser = async (req, res) => {
             lastName: lastName,
             email: email,
             password: hashPassword,
+            phone: phone
 
         })
 
@@ -127,10 +129,68 @@ const loginUser = async (req, res) => {
 
 }
 
+// forgot password using PHONE number
+const forgotPassword = async (req, res) => {
+    const {phone} = req.body;
+
+    if(!phone){
+        res.status(400).json({
+            'success' : false,
+            'message' : 'Please provide phone number!'
+        })
+    }
+
+    try {
+
+        // user find and validate
+        const user = await userModel.findOne({phone : phone})
+        if(!user){
+            return res.status(400).json({
+                'success' : false,
+                'message' : 'User Not Found!'
+            })
+        }
+
+        // generate random otp
+        const otp = Math.floor(100000 + Math.random() * 900000) // 6 digit otp
+
+        // update in database for verification
+        user.otpReset = otp;
+        user.otpResetExpires = Date.now() + 3600000;
+        await user.save()
+
+        // sending otp to phone number
+        const isSent = await sendOtp(phone, otp)
+        if(!isSent){
+            return res.status(400).json({
+                'success' : false,
+                'message' : 'Error Sending OTP'
+            })
+        }
+
+        // Success Message
+        res.status(200).json({
+            'success' : true,
+            'message' : 'OTP Send Successfully!'
+        })
+
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            'success' : false,
+            'message' : 'Server Error!'
+        })
+        
+    }
+
+}
+
 
 // exporting
 module.exports = {
     createUser,
     loginUser,
+    forgotPassword
 
 }

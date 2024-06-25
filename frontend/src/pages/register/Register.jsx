@@ -12,6 +12,7 @@ const Register = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [phone, setPhone] = useState('') // Added
 
   // State for Error
   const [firstNameError, setFirstNameError] = useState('')
@@ -19,6 +20,7 @@ const Register = () => {
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
   const [confirmPasswordError, setConfirmPasswordError] = useState('')
+  const [phoneError, setPhoneError] = useState('') // Added
 
   // Make a function to save the state
   const handleFirstname = (e) => {
@@ -39,6 +41,10 @@ const Register = () => {
 
   const handleConfirmPassword = (e) => {
     setConfirmPassword(e.target.value)
+  }
+
+  const handlePhone = (e) => {
+    setPhone(e.target.value)
   }
 
   // Validation
@@ -70,6 +76,11 @@ const Register = () => {
       isValid = false;
     }
 
+    if (phone.trim() === '') {
+      setPhoneError('Phone number is Required')
+      isValid = false;
+    }
+
     if (password.trim() !== confirmPassword.trim()) {
       setConfirmPasswordError('Password does not match')
       isValid = false;
@@ -96,7 +107,8 @@ const Register = () => {
       "firstName" : firstName,
       "lastName" : lastName,
       "email" : email,
-      "password" : password
+      "password" : password,
+      "phone" : phone
     }
     registerUserApi(data).then((res) => {
       
@@ -137,6 +149,14 @@ const Register = () => {
           {
             emailError && <p className='text-danger'>{emailError}</p>
           }
+
+          <label className='mt-2'>Phone Number</label>
+          <input onChange={handlePhone} type="number" className='form-control' placeholder='Enter your phone number' />
+          {
+            phoneError && <p className='text-danger'>{phoneError}</p>
+          }
+          
+
           <label className='mt-2'>Password</label>
           <input onChange={handlePassword} type="text" className='form-control' placeholder='Enter your password' />
           {

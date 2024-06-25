@@ -22,20 +22,20 @@ const userSchema = new mongoose.Schema({
         type : Boolean,
         default : false
     },
-    mobile : {
-        type : Number,
-        required : true,
-        default : '9840031602'
-    },
 
-    resetPasswordOTP : {
-        type : String,
+    phone : {
+        type : Number,
+        required : true
+    },
+    otpReset : {
+        type : Number,
         default : null
     },
-    resetPasswordExpires : {
+    otpResetExpires : {
         type : Date,
         default : null
     }
+
 
 })
 
