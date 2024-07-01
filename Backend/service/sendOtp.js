@@ -10,7 +10,7 @@ const sendOtp = async (phone, otp) => {
 
     // required payload
     const payload = {
-        'apiKey' : 'YOUR OWN API KEY',
+        'apiKey' : 'e19acc63-2665-49de-a16f-516b560251d1',
         'to' : phone,
         'message' : `Your OTP for Verification is ${otp}`
     }

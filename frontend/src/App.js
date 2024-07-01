@@ -18,6 +18,7 @@ import AdminUpdate from './pages/admin/AdminUpdate';
 import AdminRoutes from './protected_routes/AdminRoutes';
 import Profile from './pages/profile/Profile';
 import UserRoutes from './protected_routes/UserRoutes';
+import ForgotPassword from './pages/forgot_password/ForgotPassword';
 
 
 function App() {
@@ -41,6 +42,10 @@ function App() {
             <Route path='/admin/dashboard' element={<AdminDashboard/>}/>
             <Route path='/admin/update/:id' element={<AdminUpdate/>} />
         </Route>
+
+
+        {/* Forgot Password */}
+        <Route path='/forgot_password' element={<ForgotPassword/>} />
 
       
 

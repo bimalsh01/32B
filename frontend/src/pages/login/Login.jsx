@@ -80,14 +80,14 @@ const Login = () => {
 
       <form className='w-50'>
         <label>Enter your email : {email}</label>
-        <input onChange={(e) => setEmail(e.target.value)} type="email" className='form-control' placeholder='Enter your email address' />
+        <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" className='form-control' placeholder='Enter your email address' />
 
         {
           emailError && <p className='text-danger'>{emailError}</p>
         }
 
         <label className='mt-2'>Enter your password</label>
-        <input onChange={(e) => setPassword(e.target.value)} type="email" className='form-control' placeholder='Enter your password' />
+        <input value={password} onChange={(e) => setPassword(e.target.value)} type="email" className='form-control' placeholder='Enter your password' />
 
         {
           passwordError && <p className='text-danger'>{passwordError}</p>

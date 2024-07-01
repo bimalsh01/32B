@@ -160,13 +160,13 @@ const forgotPassword = async (req, res) => {
         await user.save()
 
         // sending otp to phone number
-        const isSent = await sendOtp(phone, otp)
-        if(!isSent){
-            return res.status(400).json({
-                'success' : false,
-                'message' : 'Error Sending OTP'
-            })
-        }
+        // const isSent = await sendOtp(phone, otp)
+        // if(!isSent){
+        //     return res.status(400).json({
+        //         'success' : false,
+        //         'message' : 'Error Sending OTP'
+        //     })
+        // }
 
         // Success Message
         res.status(200).json({
@@ -187,10 +187,17 @@ const forgotPassword = async (req, res) => {
 }
 
 
+// verify otp and set new password
+const verifyOtpAndSetPassword = async (req, res) => {
+
+}
+
+
 // exporting
 module.exports = {
     createUser,
     loginUser,
-    forgotPassword
+    forgotPassword,
+    verifyOtpAndSetPassword
 
 }
